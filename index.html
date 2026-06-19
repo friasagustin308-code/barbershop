@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navaja Negra Barbería — San Miguel de Tucumán</title>
+<meta name="description" content="Navaja Negra Barbería. Reservá tu turno, mirá nuestros trabajos, conocé al equipo y dejá tu puntuación.">
+
+<!-- ============================================================
+  NOTA PARA QUIEN EDITE ESTE ARCHIVO:
+  Los datos de contacto (WhatsApp, Instagram, dirección, etc.) son
+  PLACEHOLDERS de ejemplo. Buscá el bloque "DATOS REALES DEL NEGOCIO"
+  en el JS (al final del archivo) y reemplazalos por los datos reales.
+============================================================= -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Caveat:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   TOKENS
+========================================================= */
+:root{
+  --bg-base:#0e0c0a;
+  --bg-panel:#1c1815;
+  --bg-panel-2:#251f1a;
+  --blaze:#ff4612;
+  --volt:#f4c81a;
+  --paper:#f2ead8;
+  --paper-dim:#cbc0a8;
+  --line:#5a5249;
+  --line-dim:#3a342c;
+  --good:#7fbf6a;
+
+  --f-display:'Anton', sans-serif;
+  --f-hand:'Caveat', cursive;
+  --f-body:'Space Grotesk', sans-serif;
+  --f-mono:'JetBrains Mono', monospace;
+
+  --fs-hero: clamp(3.4rem, 10vw, 8.4rem);
+  --fs-h2: clamp(2.2rem, 6vw, 4.4rem);
+  --fs-h3: clamp(1.3rem, 3vw, 1.9rem);
+
+  --container: 1180px;
+  --nav-h: 76px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth; scroll-padding-top: var(--nav-h);}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+}
+
+body{
+  margin:0;
+  background:var(--bg-base);
+  color:var(--paper);
+  font-family:var(--f-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* grain texture overlay */
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:999;
+  opacity:.05;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+img{max-width:100%; display:block;}
+a{color:inherit;}
+button{font-family:inherit;}
+
+.container{max-width:var(--container); margin:0 auto; padding:0 24px;}
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-size:.78rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--volt); margin-bottom:14px;
+}
+.eyebrow::before{content:"";width:24px;height:2px;background:var(--blaze);display:inline-block;}
+
+h1,h2,h3{font-family:var(--f-display); text-transform:uppercase; letter-spacing:.01em; margin:0; font-weight:400;}
+h2{font-size:var(--fs-h2); line-height:.95;}
+h3{font-size:var(--fs-h3); line-height:1.05;}
+p{color:var(--paper-dim);}
+
+section{position:relative; padding:96px 0;}
+.section-head{max-width:640px; margin-bottom:56px;}
+
+/* cut/blade corner buttons */
+.btn{
+  --bc: var(--blaze);
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:var(--f-mono); font-weight:700; font-size:.85rem; letter-spacing:.06em; text-transform:uppercase;
+  padding:16px 26px;
+  background:var(--bc);
+  color:#0e0c0a;
+  border:none; cursor:pointer;
+  text-decoration:none;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+  transition: transform .15s ease, background .2s ease;
+}
+.btn:hover{ transform: translate(-2px,-2px); background:#ff5c33;}
+.btn:active{ transform: translate(0,0); }
+.btn:focus-visible{ outline:3px solid var(--paper); outline-offset:3px; }
+.btn--ghost{
+  background:transparent; color:var(--paper); border:2px solid var(--line);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+.btn--ghost:hover{ border-color:var(--volt); color:var(--volt); background:transparent;}
+.btn--volt{ background:var(--volt);} 
+.btn--volt:hover{ background:#ffd84d; }
+.btn--sm{ padding:10px 16px; font-size:.72rem; }
+.btn--block{ width:100%; justify-content:center; }
+
+/* =========================================================
+   NAV
+========================================================= */
+.nav{
+  position:fixed; top:0; left:0; right:0; z-index:500;
+  height:var(--nav-h);
+  display:flex; align-items:center;
+  background:rgba(14,12,10,.86);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line-dim);
+}
+.nav .container{display:flex; align-items:center; justify-content:space-between; width:100%;}
+.brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:var(--paper);}
+.brand-mark{width:30px; height:30px; flex-shrink:0;}
+.brand-text{font-family:var(--f-display); font-size:1.25rem; letter-spacing:.02em;}
+.brand-text em{color:var(--blaze); font-style:normal;}
+
+.nav-links{display:flex; gap:32px; list-style:none; margin:0; padding:0;}
+.nav-links a{
+  text-decoration:none; font-family:var(--f-mono); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--paper-dim); position:relative; padding:6px 2px; transition:color .2s ease;
+}
+.nav-links a::after{content:"";position:absolute; left:0; bottom:0; height:2px; width:0; background:var(--blaze); transition:width .2s ease;}
+.nav-links a:hover{color:var(--paper);}
+.nav-links a:hover::after{width:100%;}
+
+.nav-cta{display:flex; align-items:center; gap:14px;}
+.nav-burger{
+  display:none; width:42px; height:42px; border:1px solid var(--line); background:transparent;
+  color:var(--paper); cursor:pointer; align-items:center; justify-content:center;
+}
+.nav-burger svg{width:20px; height:20px;}
+
+@media (max-width: 900px){
+  .nav-links{
+    position:fixed; top:var(--nav-h); left:0; right:0; bottom:0;
+    background:var(--bg-base);
+    flex-direction:column; gap:0;
+    padding:10px 24px 30px;
+    transform:translateY(-110%);
+    transition:transform .35s ease;
+    border-bottom:1px solid var(--line-dim);
+  }
+  .nav-links.is-open{transform:translateY(0);}
+  .nav-links li{border-bottom:1px solid var(--line-dim);}
+  .nav-links a{display:block; padding:18px 4px;}
+  .nav-burger{display:inline-flex;}
+  .nav-cta .btn span.long{display:none;}
+}
+
+/* =========================================================
+   BARBER POLE (signature motif)
+========================================================= */
+.pole{
+  position:relative;
+  border-radius:999px;
+  overflow:hidden;
+  background:repeating-linear-gradient(45deg,
+    var(--blaze) 0 14px,
+    var(--paper) 14px 28px,
+    var(--volt) 28px 42px,
+    var(--paper) 42px 56px);
+  background-size:79px 79px;
+  animation: pole-spin 1.4s linear infinite;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.4);
+}
+@keyframes pole-spin{ from{background-position:0 0;} to{background-position:0 79px;} }
+
+/* =========================================================
+   HERO
+========================================================= */
+.hero{
+  min-height: 100svh;
+  display:flex; align-items:center;
+  padding-top: calc(var(--nav-h) + 40px);
+  padding-bottom:120px;
+  background:
+    radial-gradient(ellipse at 80% 10%, rgba(255,70,18,.18), transparent 55%),
+    radial-gradient(ellipse at 10% 90%, rgba(244,200,26,.10), transparent 50%),
+    var(--bg-base);
+  clip-path: polygon(0 0, 100% 0, 100% 92%, 0 100%);
+}
+.hero .container{display:grid; grid-template-columns: 1.3fr .7fr; gap:40px; align-items:center;}
+.hero-kicker{font-family:var(--f-mono); color:var(--volt); letter-spacing:.2em; text-transform:uppercase; font-size:.85rem; margin-bottom:18px;}
+.hero h1{font-size:var(--fs-hero); line-height:.88;}
+.hero h1 .line2{color:var(--blaze);}
+.hero p.lead{font-size:1.15rem; max-width:480px; margin:24px 0 36px;}
+.hero-actions{display:flex; gap:16px; flex-wrap:wrap;}
+
+.hero-side{position:relative; display:flex; justify-content:center; align-items:center;}
+.pole-wrap{display:flex; align-items:flex-end; gap:18px;}
+.pole{width:46px; height:340px;}
+.pole-cap{width:60px; height:26px; background:var(--paper-dim); border-radius:6px; margin:-10px auto 0;}
+
+.stamp{
+  position:absolute; top:-18px; right:-10px;
+  width:128px; height:128px; border-radius:50%;
+  border:2px dashed var(--volt);
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; transform:rotate(-12deg);
+  font-family:var(--f-mono); font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; color:var(--volt);
+  padding:10px;
+}
+.stamp b{display:block; font-family:var(--f-display); font-size:1rem; color:var(--paper); margin-top:4px; letter-spacing:.04em;}
+
+@media (max-width: 900px){
+  .hero .container{grid-template-columns:1fr;}
+  .hero-side{order:-1; margin-bottom:10px;}
+  .pole{height:120px;}
+  .stamp{position:static; transform:rotate(-4deg); margin-left:20px;}
+}
+
+/* =========================================================
+   TICKET / TURNOS
+========================================================= */
+.ticket-zone{background:var(--bg-panel); border-top:1px solid var(--line-dim); border-bottom:1px solid var(--line-dim);}
+.ticket{
+  background:var(--paper);
+  color:#16140f;
+  position:relative;
+  display:grid;
+  grid-template-columns: 1fr 1px 280px;
+  max-width:980px; margin:0 auto;
+}
+.ticket-perf{
+  background-image: radial-gradient(circle, var(--bg-panel) 7px, transparent 7.5px);
+  background-size:24px 24px;
+  background-position: -12px center;
+  width:1px;
+}
+.ticket-main{padding:46px 44px;}
+.ticket-stub{
+  padding:46px 30px;
+  background:repeating-linear-gradient(135deg, rgba(0,0,0,.04) 0 10px, transparent 10px 20px);
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.ticket-title{font-family:var(--f-mono); font-size:.75rem; letter-spacing:.14em; text-transform:uppercase; color:#6a5d44; margin-bottom:6px;}
+.ticket h2{color:#16140f; font-size:clamp(1.9rem,4vw,2.6rem);}
+
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:30px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field.full{grid-column:1 / -1;}
+.field label{font-family:var(--f-mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#5a5142;}
+.field input, .field select, .field textarea{
+  border:2px solid #16140f; background:#fffdf8; color:#16140f;
+  padding:13px 12px; font-family:var(--f-body); font-size:.95rem;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:3px solid var(--blaze); outline-offset:1px;
+}
+.form-actions{grid-column:1/-1; margin-top:8px;}
+.form-actions .btn{background:#16140f; color:var(--paper);}
+.form-actions .btn:hover{background:var(--blaze); color:#16140f;}
+
+.stub-num-label{font-family:var(--f-mono); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:#6a5d44;}
+.stub-num{font-family:var(--f-mono); font-size:2.6rem; font-weight:700; letter-spacing:.02em; margin:4px 0 18px;}
+.stub-list{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; font-family:var(--f-mono); font-size:.82rem;}
+.stub-list li{display:flex; justify-content:space-between; gap:10px; border-bottom:1px dashed #b8ab8c; padding-bottom:8px;}
+.stub-list b{font-weight:700;}
+.barcode{height:46px; margin-top:22px; background:repeating-linear-gradient(90deg, #16140f 0 2px, transparent 2px 5px, #16140f 5px 7px, transparent 7px 11px);}
+
+@media (max-width: 800px){
+  .ticket{grid-template-columns:1fr; }
+  .ticket-perf{display:none;}
+  .form-grid{grid-template-columns:1fr;}
+}
+
+/* modal */
+.modal-veil{
+  position:fixed; inset:0; background:rgba(8,6,5,.78); backdrop-filter:blur(3px);
+  display:none; align-items:center; justify-content:center; z-index:900; padding:24px;
+}
+.modal-veil.is-open{display:flex;}
+.modal-ticket{
+  background:var(--paper); color:#16140f; max-width:420px; width:100%; padding:38px 32px;
+  position:relative; animation: pop-in .25s ease;
+  clip-path: polygon(0 14px, 14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%);
+}
+@keyframes pop-in{from{transform:scale(.92); opacity:0;} to{transform:scale(1); opacity:1;}}
+.modal-close{
+  position:absolute; top:14px; right:14px; width:34px; height:34px;
+  background:transparent; border:2px solid #16140f; cursor:pointer; color:#16140f;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal-ticket .ticket-title{margin-top:6px;}
+.modal-ticket h3{margin:2px 0 16px;}
+.modal-actions{display:flex; flex-direction:column; gap:10px; margin-top:22px;}
+.modal-actions .btn{justify-content:center;}
+
+/* =========================================================
+   TRABAJOS / GALERIA
+========================================================= */
+.filters{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:40px;}
+.chip{
+  font-family:var(--f-mono); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase;
+  padding:9px 18px; border:1px solid var(--line); background:transparent; color:var(--paper-dim);
+  cursor:pointer; transition:all .2s ease;
+}
+.chip:hover{border-color:var(--volt); color:var(--volt);}
+.chip.is-active{background:var(--volt); color:#16140f; border-color:var(--volt);}
+
+.wall{
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:28px 22px;
+}
+@media (max-width:1000px){.wall{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:560px){.wall{grid-template-columns:1fr;}}
+
+.photo-card{
+  background:var(--paper); padding:14px 14px 0; cursor:pointer;
+  transform:rotate(var(--rot,0deg));
+  transition: transform .3s ease, box-shadow .3s ease;
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  position:relative;
+}
+.photo-card::before{
+  content:""; position:absolute; top:-10px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:64px; height:22px; background:rgba(244,200,26,.55); 
+}
+.photo-card:hover, .photo-card:focus-within{ transform:rotate(0deg) translateY(-6px); box-shadow:0 18px 34px rgba(0,0,0,.5);}
+.photo-card .frame{aspect-ratio:4/5; overflow:hidden; background:#000;}
+.photo-card img{width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.05); transition:filter .5s ease, transform .5s ease;}
+.photo-card:hover img, .photo-card:focus-within img{filter:grayscale(0) contrast(1); transform:scale(1.04);}
+.photo-card figcaption{font-family:var(--f-hand); font-size:1.3rem; color:#16140f; padding:12px 4px 16px; text-align:center;}
+.photo-card .tag{
+  position:absolute; bottom:46px; left:14px; font-family:var(--f-mono); font-size:.62rem; text-transform:uppercase;
+  background:var(--blaze); color:#16140f; padding:3px 8px; letter-spacing:.06em;
+}
+.photo-card.is-hidden{display:none;}
+
+/* =========================================================
+   STAFF
+========================================================= */
+.crew{display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:24px;}
+.crew-card{
+  background:var(--bg-panel); border:1px solid var(--line-dim); padding:0; position:relative; overflow:hidden;
+  transition:border-color .25s ease, transform .25s ease;
+}
+.crew-card:hover{border-color:var(--blaze); transform:translateY(-4px);}
+.crew-photo{aspect-ratio:1/1; overflow:hidden; position:relative;}
+.crew-photo img{width:100%; height:100%; object-fit:cover; filter:grayscale(.3);}
+.crew-photo .num{
+  position:absolute; top:10px; left:10px; font-family:var(--f-mono); font-size:.7rem; color:var(--volt);
+  background:rgba(14,12,10,.7); padding:3px 8px;
+}
+.crew-body{padding:20px 20px 24px;}
+.crew-nick{font-family:var(--f-hand); font-size:1.5rem; color:var(--volt); line-height:1;}
+.crew-name{font-family:var(--f-display); font-size:1.3rem; text-transform:uppercase; margin:4px 0 8px;}
+.crew-role{font-family:var(--f-mono); font-size:.74rem; color:var(--paper-dim); text-transform:uppercase; letter-spacing:.05em; margin-bottom:12px;}
+.crew-stars{display:flex; align-items:center; gap:8px; margin-bottom:18px; font-family:var(--f-mono); font-size:.8rem; color:var(--paper-dim);}
+.crew-stars .stars{color:var(--volt); letter-spacing:2px;}
+.crew-actions{display:flex; gap:10px; flex-wrap:wrap;}
+.icon-btn{
+  width:40px; height:40px; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--line); color:var(--paper); text-decoration:none; transition:all .2s ease;
+}
+.icon-btn:hover{border-color:var(--volt); color:var(--volt);}
+.icon-btn svg{width:18px; height:18px;}
+
+/* =========================================================
+   OPINIONES
+========================================================= */
+.reviews-top{display:grid; grid-template-columns:auto 1fr; gap:48px; align-items:end; margin-bottom:48px;}
+.score-big{display:flex; align-items:baseline; gap:14px;}
+.score-num{font-family:var(--f-display); font-size:5rem; color:var(--volt); line-height:1;}
+.score-meta .stars{color:var(--volt); font-size:1.3rem; letter-spacing:3px;}
+.score-meta span{display:block; font-family:var(--f-mono); font-size:.78rem; color:var(--paper-dim); margin-top:4px;}
+
+.review-form{
+  background:var(--bg-panel); border:1px solid var(--line-dim); padding:30px; margin-bottom:48px;
+}
+.star-input{display:flex; gap:6px; margin:10px 0 22px;}
+.star-input button{
+  background:none; border:none; cursor:pointer; font-size:2rem; line-height:1; color:var(--line);
+  transition:color .15s ease, transform .15s ease; padding:0;
+}
+.star-input button.is-on{color:var(--volt);}
+.star-input button:hover{ transform:scale(1.15); }
+
+.notes{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:24px;}
+.note{
+  background:#f4eccb; color:#16140f; padding:24px 22px 20px; position:relative;
+  transform:rotate(var(--rot,0deg)); box-shadow:0 8px 18px rgba(0,0,0,.3);
+  transition: transform .25s ease;
+}
+.note:hover{transform:rotate(0deg) translateY(-4px);}
+.note::before{
+  content:""; position:absolute; top:-9px; left:50%; transform:translateX(-50%) rotate(2deg);
+  width:60px; height:20px; background:rgba(255,70,18,.55);
+}
+.note .stars{color:#b6860a; letter-spacing:2px; margin-bottom:10px; display:block;}
+.note p{font-family:var(--f-hand); font-size:1.35rem; color:#16140f; line-height:1.25; margin:0 0 14px;}
+.note .who{font-family:var(--f-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:#6a5d44;}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+footer{background:var(--bg-panel-2); border-top:1px solid var(--line-dim); padding:72px 0 28px;}
+.foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:36px; margin-bottom:56px;}
+.foot-brand p{max-width:280px; margin-top:14px;}
+.foot-col h4{font-family:var(--f-mono); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--volt); margin:0 0 18px;}
+.foot-col ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:12px;}
+.foot-col a{text-decoration:none; color:var(--paper-dim); font-size:.92rem; transition:color .2s ease;}
+.foot-col a:hover{color:var(--paper);}
+.foot-social{display:flex; gap:10px; margin-top:18px;}
+.foot-bottom{
+  border-top:1px solid var(--line-dim); padding-top:24px; display:flex; justify-content:space-between;
+  flex-wrap:wrap; gap:10px; font-family:var(--f-mono); font-size:.74rem; color:var(--line);
+}
+@media (max-width:800px){.foot-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:520px){.foot-grid{grid-template-columns:1fr;}}
+
+/* floating whatsapp */
+.fab{
+  position:fixed; bottom:24px; right:24px; z-index:600;
+  width:62px; height:62px; border-radius:50%; background:var(--good);
+  display:flex; align-items:center; justify-content:center; color:#0e0c0a;
+  text-decoration:none; box-shadow:0 8px 20px rgba(0,0,0,.4);
+  animation: fab-pulse 2.4s ease-in-out infinite;
+}
+.fab svg{width:30px; height:30px;}
+@keyframes fab-pulse{0%,100%{box-shadow:0 8px 20px rgba(127,191,106,.0);} 50%{box-shadow:0 8px 26px rgba(127,191,106,.55);}}
+
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+
+/* divider blade */
+.divider{
+  height:60px; background:var(--bg-base);
+  clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);
+  margin-top:-1px;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+============================================================= -->
+<nav class="nav">
+  <div class="container">
+    <a href="#inicio" class="brand">
+      <span class="pole brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">NAVAJA<em>NEGRA</em></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#inicio">Inicio</a></li>
+      <li><a href="#turnos">Turnos</a></li>
+      <li><a href="#trabajos">Trabajos</a></li>
+      <li><a href="#staff">Staff</a></li>
+      <li><a href="#opiniones">Opiniones</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#turnos" class="btn btn--sm"><span class="long">Reservar</span> turno</a>
+      <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="navLinks">
+        <svg id="burgerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+============================================================= -->
+<header class="hero" id="inicio">
+  <div class="container">
+    <div class="hero-copy">
+      <div class="hero-kicker">San Miguel de Tucumán · Desde 2016</div>
+      <h1>EL FILO<br><span class="line2">QUE TE DEFINE</span></h1>
+      <p class="lead">Cortes de barrio con actitud de avenida. En Navaja Negra no seguimos moda: la marcamos navaja en mano, tijera en la otra.</p>
+      <div class="hero-actions">
+        <a href="#turnos" class="btn">Sacar mi turno</a>
+        <a href="#trabajos" class="btn btn--ghost">Ver trabajos</a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="pole-wrap">
+        <div>
+          <div class="pole" style="width:50px;height:300px;"></div>
+          <div class="pole-cap"></div>
+        </div>
+      </div>
+      <div class="stamp">DESDE<b>2016</b>TUCUMÁN ★</div>
+    </div>
+  </div>
+</header>
+<div class="divider" aria-hidden="true"></div>
+
+<!-- ============================================================
+     TURNOS — TICKET
+============================================================= -->
+<section class="ticket-zone" id="turnos">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Reservá tu lugar</div>
+      <h2>Sacá tu ticket</h2>
+      <p>Completá tus datos, elegí barbero y horario. Te confirmamos al toque y te dejamos el aviso listo para mandar por WhatsApp.</p>
+    </div>
+
+    <div class="ticket">
+      <div class="ticket-main">
+        <div class="ticket-title">Formulario de reserva</div>
+        <h2>Turno</h2>
+        <form id="bookingForm" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="f-barbero">Barbero</label>
+              <select id="f-barbero" name="barbero" required>
+                <option value="" disabled selected>Elegí uno</option>
+                <option>Diego "Fade King" Romero</option>
+                <option>Lucas "El Mago" Ibáñez</option>
+                <option>Martín "Navaja" Suárez</option>
+                <option>Brian "Old School" Paz</option>
+                <option>Facu "Color" Medina</option>
+                <option>Cualquiera disponible</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-servicio">Servicio</label>
+              <select id="f-servicio" name="servicio" required>
+                <option value="" disabled selected>Elegí uno</option>
+                <option>Corte clásico — $8.000</option>
+                <option>Fade / degradé — $9.500</option>
+                <option>Corte + barba — $13.000</option>
+                <option>Afeitado a navaja — $7.000</option>
+                <option>Diseño / líneas — $4.000</option>
+                <option>Color / mechas — $11.000</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-fecha">Fecha</label>
+              <input type="date" id="f-fecha" name="fecha" required>
+            </div>
+            <div class="field">
+              <label for="f-hora">Hora</label>
+              <input type="time" id="f-hora" name="hora" required min="09:00" max="20:00">
+            </div>
+            <div class="field">
+              <label for="f-nombre">Nombre</label>
+              <input type="text" id="f-nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+            <div class="field">
+              <label for="f-telefono">Teléfono</label>
+              <input type="tel" id="f-telefono" name="telefono" placeholder="381 000 0000" required>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn--block">Confirmar turno →</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="ticket-perf" aria-hidden="true"></div>
+      <div class="ticket-stub">
+        <div>
+          <div class="stub-num-label">N° de orden</div>
+          <div class="stub-num" id="ticketPreviewNum">T-000</div>
+          <ul class="stub-list" id="stubList">
+            <li><span>Barbero</span><b>—</b></li>
+            <li><span>Servicio</span><b>—</b></li>
+            <li><span>Fecha</span><b>—</b></li>
+            <li><span>Hora</span><b>—</b></li>
+          </ul>
+        </div>
+        <div class="barcode" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TRABAJOS — MURO
+============================================================= -->
+<section id="trabajos">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">El muro</div>
+      <h2>Trabajos que hablan solos</h2>
+      <p>Pasá el mouse (o el dedo) sobre la foto. Como en el local: la pared revela el corte.</p>
+    </div>
+
+    <div class="filters" id="filters" role="group" aria-label="Filtrar trabajos por categoría">
+      <button class="chip is-active" data-filter="todos">Todos</button>
+      <button class="chip" data-filter="fade">Fade</button>
+      <button class="chip" data-filter="barba">Barba</button>
+      <button class="chip" data-filter="clasico">Clásico</button>
+      <button class="chip" data-filter="diseno">Diseños</button>
+    </div>
+
+    <div class="wall" id="wall"><!-- generado por JS --></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STAFF
+============================================================= -->
+<section id="staff" style="background:var(--bg-panel); border-top:1px solid var(--line-dim); border-bottom:1px solid var(--line-dim);">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">El escuadrón</div>
+      <h2>Conocé a los artistas</h2>
+      <p>Cinco navajas, un mismo estándar: que salgas mejor de lo que entraste.</p>
+    </div>
+    <div class="crew" id="crew"><!-- generado por JS --></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     OPINIONES
+============================================================= -->
+<section id="opiniones">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Tu voz</div>
+      <h2>Contanos cómo te fue</h2>
+    </div>
+
+    <div class="reviews-top">
+      <div class="score-big">
+        <div class="score-num" id="scoreNum">4.9</div>
+        <div class="score-meta">
+          <div class="stars" id="scoreStars">★★★★★</div>
+          <span id="scoreCount">basado en 4 reseñas</span>
+        </div>
+      </div>
+      <p style="margin:0;">Calificá tu última visita: nos sirve para mejorar y a otros clientes para elegir barbero.</p>
+    </div>
+
+    <form class="review-form" id="reviewForm" novalidate>
+      <div class="field">
+        <label for="r-nombre">Tu nombre</label>
+        <input type="text" id="r-nombre" placeholder="¿Cómo te llamás?" required style="background:var(--bg-base); color:var(--paper); border:2px solid var(--line); padding:13px 12px; width:100%; max-width:320px;">
+      </div>
+      <label style="font-family:var(--f-mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--paper-dim); display:block; margin-top:18px;">Puntuación</label>
+      <div class="star-input" id="starInput" role="radiogroup" aria-label="Puntuación de 1 a 5 estrellas">
+        <button type="button" data-val="1" aria-label="1 estrella">★</button>
+        <button type="button" data-val="2" aria-label="2 estrellas">★</button>
+        <button type="button" data-val="3" aria-label="3 estrellas">★</button>
+        <button type="button" data-val="4" aria-label="4 estrellas">★</button>
+        <button type="button" data-val="5" aria-label="5 estrellas">★</button>
+      </div>
+      <div class="field">
+        <label for="r-comentario">Comentario</label>
+        <textarea id="r-comentario" rows="3" placeholder="Contanos tu experiencia..." required style="background:var(--bg-base); color:var(--paper); border:2px solid var(--line); padding:13px 12px; width:100%; font-family:var(--f-body);"></textarea>
+      </div>
+      <button type="submit" class="btn btn--volt" style="margin-top:18px;">Puntuar</button>
+    </form>
+
+    <div class="notes" id="notes"><!-- generado por JS --></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER / CONTACTO
+============================================================= -->
+<footer id="contacto">
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#inicio" class="brand"><span class="pole brand-mark" aria-hidden="true" style="width:26px;height:26px;"></span><span class="brand-text" style="font-size:1.1rem;">NAVAJA<em>NEGRA</em></span></a>
+        <p>Barbería de barrio en San Miguel de Tucumán. Cortes, barba y actitud desde 2016.</p>
+        <div class="foot-social" id="footSocial"><!-- generado por JS --></div>
+      </div>
+      <div class="foot-col">
+        <h4>Horarios</h4>
+        <ul style="font-family:var(--f-mono); font-size:.85rem; color:var(--paper-dim);">
+          <li>Lun a Vie · 9:00–20:00</li>
+          <li>Sábados · 9:00–18:00</li>
+          <li>Domingo · Cerrado</li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Contacto</h4>
+        <ul id="footContact"><!-- generado por JS --></ul>
+      </div>
+      <div class="foot-col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#turnos">Reservar turno</a></li>
+          <li><a href="#trabajos">Ver trabajos</a></li>
+          <li><a href="#staff">El staff</a></li>
+          <li><a href="#opiniones">Dejar opinión</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> Navaja Negra Barbería — San Miguel de Tucumán, Argentina</span>
+      <span>Diseño hecho a navaja ✂</span>
+    </div>
+  </div>
+</footer>
+
+<!-- floating whatsapp -->
+<a class="fab" id="fabWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.27 4.81L2 22l5.42-1.36a9.83 9.83 0 0 0 4.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.78 14.09c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.3-1.66-.6-2.92-1.26-4.83-4.2-4.98-4.4-.15-.2-1.19-1.58-1.19-3.02 0-1.44.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.02.65.5.24.55.81 1.93.88 2.07.07.14.12.31.02.5-.1.2-.15.32-.3.49-.15.17-.31.39-.45.52-.15.14-.3.3-.13.59.17.29.76 1.26 1.64 2.04 1.13 1 2.08 1.32 2.37 1.47.29.15.46.13.63-.07.17-.2.71-.83.9-1.11.19-.29.38-.24.63-.14.25.1 1.62.76 1.9.9.27.15.46.22.52.34.06.13.06.71-.18 1.39z"/></svg>
+</a>
+
+<!-- ============================================================
+     MODAL TICKET CONFIRMADO
+============================================================= -->
+<div class="modal-veil" id="modalVeil">
+  <div class="modal-ticket" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">✕</button>
+    <div class="ticket-title">¡Turno confirmado!</div>
+    <h3 id="modalTitle">Te esperamos, <span id="modalNombre">—</span></h3>
+    <ul class="stub-list" id="modalList"></ul>
+    <div class="modal-actions">
+      <a class="btn" id="modalWhatsapp" href="#" target="_blank" rel="noopener">Avisar por WhatsApp</a>
+      <button class="btn btn--ghost" id="modalCloseBtn" type="button">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =========================================================
+     DATOS REALES DEL NEGOCIO — reemplazar por los datos reales
+  ========================================================= */
+  const NEGOCIO = {
+    whatsapp: "5493814112233",            // formato 54 9 área número, sin + ni espacios
+    instagram: "https://instagram.com/navajanegra.tuc",
+    facebook: "https://facebook.com/navajanegra.tuc",
+    tiktok: "https://tiktok.com/@navajanegra.tuc",
+    email: "hola@navajanegra.com.ar",
+    telefono: "+5493814112233",
+    direccion: "Av. Roca 1450, San Miguel de Tucumán, Argentina"
+  };
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- NAV: burger + cierre al click ---------- */
+  const navLinks = document.getElementById("navLinks");
+  const navBurger = document.getElementById("navBurger");
+  navBurger.addEventListener("click", () => {
+    const open = navLinks.classList.toggle("is-open");
+    navBurger.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  navLinks.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
+    navLinks.classList.remove("is-open");
+    navBurger.setAttribute("aria-expanded", "false");
+  }));
+
+  /* ---------- FAB whatsapp ---------- */
+  document.getElementById("fabWhatsapp").href =
+    `https://wa.me/${NEGOCIO.whatsapp}?text=${encodeURIComponent("¡Hola! Quiero consultar por un turno en Navaja Negra ✂️")}`;
+
+  /* ---------- FOOTER social + contacto (generado para que los links sean reales) ---------- */
+  document.getElementById("footSocial").innerHTML = `
+    <a class="icon-btn" href="${NEGOCIO.instagram}" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+    </a>
+    <a class="icon-btn" href="${NEGOCIO.facebook}" target="_blank" rel="noopener" aria-label="Facebook">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9h3V5h-3a4 4 0 0 0-4 4v2H7v4h3v6h4v-6h3l1-4h-4V9a1 1 0 0 1 1-1z"/></svg>
+    </a>
+    <a class="icon-btn" href="${NEGOCIO.tiktok}" target="_blank" rel="noopener" aria-label="TikTok">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 4v9.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 4c.5 2.5 2 4 5 4.2"/></svg>
+    </a>`;
+  document.getElementById("footContact").innerHTML = `
+    <li><a href="https://wa.me/${NEGOCIO.whatsapp}" target="_blank" rel="noopener">WhatsApp</a></li>
+    <li><a href="tel:${NEGOCIO.telefono}">${NEGOCIO.telefono}</a></li>
+    <li><a href="mailto:${NEGOCIO.email}">${NEGOCIO.email}</a></li>
+    <li><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(NEGOCIO.direccion)}" target="_blank" rel="noopener">${NEGOCIO.direccion}</a></li>`;
+
+  /* =========================================================
+     TRABAJOS — MURO
+  ========================================================= */
+  const TRABAJOS = [
+    {cat:"fade", seed:"navaja01", tag:"Fade", cap:"Skin fade pulido"},
+    {cat:"barba", seed:"navaja02", tag:"Barba", cap:"Barba perfilada"},
+    {cat:"clasico", seed:"navaja03", tag:"Clásico", cap:"Corte clásico"},
+    {cat:"diseno", seed:"navaja04", tag:"Diseño", cap:"Líneas + fade"},
+    {cat:"fade", seed:"navaja05", tag:"Fade", cap:"Low fade texturizado"},
+    {cat:"barba", seed:"navaja06", tag:"Barba", cap:"Afeitado a navaja"},
+    {cat:"clasico", seed:"navaja07", tag:"Clásico", cap:"Side part"},
+    {cat:"diseno", seed:"navaja08", tag:"Diseño", cap:"Diseño a mano alzada"},
+    {cat:"fade", seed:"navaja09", tag:"Fade", cap:"Mid fade + barba"},
+    {cat:"clasico", seed:"navaja10", tag:"Clásico", cap:"Pompadour"},
+    {cat:"diseno", seed:"navaja11", tag:"Diseño", cap:"Líneas geométricas"},
+    {cat:"barba", seed:"navaja12", tag:"Barba", cap:"Degradé de barba"},
+  ];
+  const wall = document.getElementById("wall");
+  wall.innerHTML = TRABAJOS.map((t,i) => {
+    const rot = (i % 2 === 0 ? -1 : 1) * (3 + (i % 3) * 2);
+    return `
+    <figure class="photo-card" style="--rot:${rot}deg" data-cat="${t.cat}" tabindex="0">
+      <span class="tag">${t.tag}</span>
+      <div class="frame"><img src="https://picsum.photos/seed/${t.seed}/520/640" alt="Trabajo: ${t.cap}" loading="lazy"></div>
+      <figcaption>${t.cap}</figcaption>
+    </figure>`;
+  }).join("");
+
+  const filters = document.getElementById("filters");
+  filters.addEventListener("click", (e) => {
+    const btn = e.target.closest(".chip");
+    if(!btn) return;
+    filters.querySelectorAll(".chip").forEach(c => c.classList.remove("is-active"));
+    btn.classList.add("is-active");
+    const f = btn.dataset.filter;
+    wall.querySelectorAll(".photo-card").forEach(card => {
+      const show = (f === "todos" || card.dataset.cat === f);
+      card.classList.toggle("is-hidden", !show);
+    });
+  });
+
+  /* =========================================================
+     STAFF
+  ========================================================= */
+  const CREW = [
+    {nick:"Fade King", name:'Diego Romero', role:"Especialista en degradés · 9 años", stars:4.9, img:13, ig:"fadeking.dr"},
+    {nick:"El Mago", name:'Lucas Ibáñez', role:"Diseños y líneas · 6 años", stars:4.8, img:33, ig:"elmago.lucas"},
+    {nick:"Navaja", name:'Martín Suárez', role:"Afeitado clásico y barba · 11 años", stars:5.0, img:14, ig:"navaja.martin"},
+    {nick:"Old School", name:'Brian Paz', role:"Cortes clásicos · 7 años", stars:4.7, img:51, ig:"oldschool.brian"},
+    {nick:"Color", name:'Facu Medina', role:"Color y mechas · 5 años", stars:4.9, img:60, ig:"color.facu"},
+  ];
+  const crewWrap = document.getElementById("crew");
+  crewWrap.innerHTML = CREW.map((b,i) => `
+    <article class="crew-card">
+      <div class="crew-photo">
+        <span class="num">N°${String(i+1).padStart(2,"0")}</span>
+        <img src="https://i.pravatar.cc/420?img=${b.img}" alt="Foto de ${b.name}" loading="lazy">
+      </div>
+      <div class="crew-body">
+        <div class="crew-nick">"${b.nick}"</div>
+        <h3 class="crew-name">${b.name}</h3>
+        <div class="crew-role">${b.role}</div>
+        <div class="crew-stars"><span class="stars">${starsString(b.stars)}</span> ${b.stars.toFixed(1)}</div>
+        <div class="crew-actions">
+          <button class="btn btn--sm book-with" data-name="${b.name}">Reservar</button>
+          <a class="icon-btn" href="https://instagram.com/${b.ig}" target="_blank" rel="noopener" aria-label="Instagram de ${b.name}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          </a>
+          <a class="icon-btn" href="https://wa.me/${NEGOCIO.whatsapp}?text=${encodeURIComponent('¡Hola! Quiero un turno con '+b.name)}" target="_blank" rel="noopener" aria-label="WhatsApp con ${b.name}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.27 4.81L2 22l5.42-1.36a9.83 9.83 0 0 0 4.62 1.18h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.78 14.09c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.3-1.66-.6-2.92-1.26-4.83-4.2-4.98-4.4-.15-.2-1.19-1.58-1.19-3.02 0-1.44.75-2.14 1.02-2.43.27-.29.58-.36.78-.36h.56c.18 0 .42-.02.65.5.24.55.81 1.93.88 2.07.07.14.12.31.02.5-.1.2-.15.32-.3.49-.15.17-.31.39-.45.52-.15.14-.3.3-.13.59.17.29.76 1.26 1.64 2.04 1.13 1 2.08 1.32 2.37 1.47.29.15.46.13.63-.07.17-.2.71-.83.9-1.11.19-.29.38-.24.63-.14.25.1 1.62.76 1.9.9.27.15.46.22.52.34.06.13.06.71-.18 1.39z"/></svg>
+          </a>
+        </div>
+      </div>
+    </article>`).join("");
+
+  function starsString(v){
+    const full = Math.round(v);
+    return "★★★★★☆☆☆☆☆".slice(5-full,10-full);
+  }
+
+  crewWrap.addEventListener("click", (e) => {
+    const btn = e.target.closest(".book-with");
+    if(!btn) return;
+    const select = document.getElementById("f-barbero");
+    const opt = Array.from(select.options).find(o => o.value === btn.dataset.name);
+    if(opt) select.value = btn.dataset.name;
+    document.getElementById("turnos").scrollIntoView({behavior:"smooth"});
+    select.focus();
+  });
+
+  /* =========================================================
+     TICKET PREVIEW EN VIVO
+  ========================================================= */
+  const form = document.getElementById("bookingForm");
+  const stubList = document.getElementById("stubList");
+  const ticketPreviewNum = document.getElementById("ticketPreviewNum");
+  let lastTicketNum = 41;
+
+  function fmtFecha(v){
+    if(!v) return "—";
+    const [y,m,d] = v.split("-");
+    return `${d}/${m}/${y}`;
+  }
+  function updatePreview(){
+    const fd = new FormData(form);
+    const items = [
+      ["Barbero", fd.get("barbero") || "—"],
+      ["Servicio", fd.get("servicio") || "—"],
+      ["Fecha", fmtFecha(fd.get("fecha"))],
+      ["Hora", fd.get("hora") || "—"],
+    ];
+    stubList.innerHTML = items.map(([k,v]) => `<li><span>${k}</span><b>${v}</b></li>`).join("");
+  }
+  form.addEventListener("input", updatePreview);
+  document.getElementById("f-fecha").min = new Date().toISOString().split("T")[0];
+
+  /* ---------- modal ---------- */
+  const modalVeil = document.getElementById("modalVeil");
+  function closeModal(){ modalVeil.classList.remove("is-open"); }
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+  document.getElementById("modalCloseBtn").addEventListener("click", closeModal);
+  modalVeil.addEventListener("click", (e) => { if(e.target === modalVeil) closeModal(); });
+  document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){
+      form.reportValidity();
+      return;
+    }
+    const fd = new FormData(form);
+    const nombre = fd.get("nombre");
+    const num = "T-" + String(++lastTicketNum).padStart(3,"0");
+    ticketPreviewNum.textContent = num;
+
+    const items = [
+      ["Barbero", fd.get("barbero")],
+      ["Servicio", fd.get("servicio")],
+      ["Fecha", fmtFecha(fd.get("fecha"))],
+      ["Hora", fd.get("hora")],
+      ["Teléfono", fd.get("telefono")],
+    ];
+    document.getElementById("modalNombre").textContent = nombre;
+    document.getElementById("modalList").innerHTML =
+      `<li><span>Ticket</span><b>${num}</b></li>` +
+      items.map(([k,v]) => `<li><span>${k}</span><b>${v}</b></li>`).join("");
+
+    const msg = `¡Hola! Soy ${nombre}. Quiero confirmar mi turno ${num}: ${fd.get("servicio")} con ${fd.get("barbero")} el ${fmtFecha(fd.get("fecha"))} a las ${fd.get("hora")}.`;
+    document.getElementById("modalWhatsapp").href = `https://wa.me/${NEGOCIO.whatsapp}?text=${encodeURIComponent(msg)}`;
+
+    modalVeil.classList.add("is-open");
+    form.reset();
+    updatePreview();
+  });
+
+  /* =========================================================
+     OPINIONES
+  ========================================================= */
+  let REVIEWS = [
+    {name:"Pablo G.", stars:5, text:"Entrás con el pelo de un domingo cualquiera y salís listo para portada.", rot:-2},
+    {name:"Sofía R.", stars:5, text:"Le hice el diseño a mi hijo y quedó impecable. Volvemos siempre.", rot:2},
+    {name:"Nico T.", stars:4, text:"Buena onda, buen corte. A veces hay que esperar un poco.", rot:-1},
+    {name:"Ariel M.", stars:5, text:"El afeitado a navaja es otro nivel. Ritual total.", rot:3},
+  ];
+
+  function renderReviews(){
+    const notes = document.getElementById("notes");
+    notes.innerHTML = REVIEWS.map(r => `
+      <div class="note" style="--rot:${r.rot}deg">
+        <span class="stars">${starsString(r.stars)}</span>
+        <p>"${escapeHtml(r.text)}"</p>
+        <div class="who">— ${escapeHtml(r.name)}</div>
+      </div>`).join("");
+
+    const avg = REVIEWS.reduce((s,r) => s + r.stars, 0) / REVIEWS.length;
+    document.getElementById("scoreNum").textContent = avg.toFixed(1);
+    document.getElementById("scoreStars").textContent = starsString(avg);
+    document.getElementById("scoreCount").textContent = `basado en ${REVIEWS.length} reseña${REVIEWS.length===1?"":"s"}`;
+  }
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+  renderReviews();
+
+  /* star input interactivo */
+  const starInput = document.getElementById("starInput");
+  let chosenStars = 0;
+  starInput.addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if(!b) return;
+    chosenStars = Number(b.dataset.val);
+    Array.from(starInput.children).forEach(btn => {
+      btn.classList.toggle("is-on", Number(btn.dataset.val) <= chosenStars);
+    });
+  });
+
+  const reviewForm = document.getElementById("reviewForm");
+  reviewForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = document.getElementById("r-nombre").value.trim();
+    const text = document.getElementById("r-comentario").value.trim();
+    if(!name || !text || chosenStars === 0){
+      alert("Falta poner tu nombre, el comentario o elegir las estrellas ★");
+      return;
+    }
+    REVIEWS.unshift({name, stars:chosenStars, text, rot:(Math.random()*6-3).toFixed(1)});
+    renderReviews();
+    reviewForm.reset();
+    chosenStars = 0;
+    Array.from(starInput.children).forEach(btn => btn.classList.remove("is-on"));
+    document.getElementById("opiniones").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+})();
+</script>
+</body>
+</html>
